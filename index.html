@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community-Owned Tourism Simulator</title>
+
+<style>
+/* =================================================
+   RESET & BASE
+================================================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI', sans-serif;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  background:
+    linear-gradient(rgba(0,0,0,.60),rgba(0,0,0,.60)),
+    url('bg-main.jpg') center/cover fixed;
+  color:#e5e7eb;
+  line-height:1.55;
+}
+
+/* =================================================
+   NAVBAR
+================================================= */
+.navbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:70px;
+  background:rgba(2,6,23,.9);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 8%;
+  z-index:9999; /* ⬅️ NAIKIN */
+  border-bottom:1px solid #1e293b;
+}
+
+
+.nav-brand{
+  color:#22c55e;
+  font-weight:bold;
+  letter-spacing:2px;
+}
+
+.nav-menu{
+  list-style:none;
+  display:flex;
+  gap:26px;
+}
+
+.nav-menu a{
+  color:#cbd5f5;
+  text-decoration:none;
+  font-size:14px;
+  transition:.3s;
+}
+
+.nav-menu a:hover{
+  color:#22c55e;
+}
+
+/* =================================================
+   GLOBAL SECTION (DEFAULT)
+================================================= */
+section{
+  padding:90px 8%;
+}
+
+h1,h2,h3{
+  color:#f8fafc;
+}
+
+.section-title{
+  max-width:900px;
+  margin-bottom:28px;
+}
+
+.section-title p{
+  color:#cbd5f5;
+  opacity:.9;
+}
+
+/* =================================================
+   HERO
+================================================= */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  position:relative;
+  z-index:1;
+}
+
+
+.hero h1{
+  font-size:3rem;
+  margin-bottom:16px;
+}
+
+/* =================================================
+   PETA MASALAH (OVERRIDE PADDING)
+================================================= */
+.map-section{
+  background:
+    linear-gradient(rgba(18,12,44,.88),rgba(0,0,0,.88)),
+    url('bg-map.jpeg') center/cover;
+
+  /* OVERRIDE padding global */
+  padding:60px 8% 70px;
+}
+
+.flowchart{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  margin-top:10px;
+}
+
+/* COLUMN */
+.flow-column{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.flow-column h3{
+  margin-bottom:18px;
+  letter-spacing:2px;
+  opacity:.9;
+}
+
+/* BOX */
+.flow-box{
+  background:#020617;
+  border:1px solid #1e293b;
+  border-radius:14px;
+  padding:14px;
+  width:100%;
+  max-width:400px;
+  text-align:center;
+  line-height:1.45;
+}
+
+/* ARROW */
+.arrow-down{
+  font-size:20px;
+  color:#22c55e;
+  margin:4px 0;
+}
+
+/* =================================================
+   PLACEHOLDER SECTIONS
+================================================= */
+.placeholder{
+  border:2px dashed #334155;
+  border-radius:20px;
+  padding:50px;
+  text-align:center;
+  opacity:.85;
+}
+
+/* =================================================
+   RESPONSIVE (MOBILE LEBIH RAPAT)
+================================================= */
+@media(max-width:900px){
+  section{
+    padding:70px 6%;
+  }
+
+  .map-section{
+    padding:50px 6% 60px;
+  }
+
+  .flowchart{
+    grid-template-columns:1fr;
+    gap:36px;
+  }
+
+
+  .flow-box{
+    max-width:100%;
+  }
+}
+/* =================================================
+   SKENARIO AWAL – FINAL STYLED VERSION
+   Fokus: readable, akademis, visual kuat
+================================================= */
+
+#skenario{
+  background:rgba(2,6,23,.65);
+}
+
+/* ===============================
+   GRID LAYOUT
+=============================== */
+.skenario-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:36px;
+  align-items:flex-start;
+}
+
+/* ===============================
+   CARD UTAMA
+=============================== */
+.skenario-card{
+  position:relative;
+  background:linear-gradient(
+    to bottom,
+    rgba(15,23,42,.95),
+    rgba(2,6,23,.95)
+  );
+  border:1px solid #1e293b;
+  border-radius:20px;
+  padding:32px 30px;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.03);
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+
+.skenario-card:hover{
+  transform:translateY(-4px);
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+/* ===============================
+   STRIP AKSEN ATAS
+=============================== */
+.skenario-card::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:6px;
+  border-radius:20px 20px 0 0;
+}
+
+.skenario-card.investor::before{
+  background:linear-gradient(90deg,#fb923c,#ef4444);
+}
+
+.skenario-card.komunitas::before{
+  background:linear-gradient(90deg,#22c55e,#16a34a);
+}
+
+/* ===============================
+   JUDUL CARD
+=============================== */
+.skenario-card h3{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:20px;
+  margin-bottom:18px;
+  letter-spacing:1px;
+}
+
+.skenario-card h3::before{
+  content:"";
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:currentColor;
+  opacity:.85;
+}
+
+.skenario-card.investor h3{
+  color:#fb923c;
+}
+
+.skenario-card.komunitas h3{
+  color:#22c55e;
+}
+
+/* ===============================
+   SUB JUDUL (a, b, c)
+=============================== */
+.skenario-card h4{
+  margin-top:26px;
+  margin-bottom:10px;
+  padding-left:12px;
+  font-size:15px;
+  font-weight:600;
+  color:#a7f3d0;
+  border-left:3px solid rgba(167,243,208,.6);
+}
+
+.skenario-card.investor h4{
+  border-color:#fb923c;
+}
+
+.skenario-card.komunitas h4{
+  border-color:#22c55e;
+}
+
+/* ===============================
+   PARAGRAF
+=============================== */
+.skenario-card p{
+  font-size:14px;
+  line-height:1.75;
+  margin-bottom:14px;
+  color:#e5e7eb;
+  text-align:justify;
+  max-width:95%;
+}
+
+/* ===============================
+   LIST
+=============================== */
+.skenario-card ul{
+  padding-left:18px;
+  margin-top:8px;
+}
+
+.skenario-card li{
+  font-size:14px;
+  line-height:1.6;
+  margin-bottom:6px;
+}
+
+/* ===============================
+   TABEL DISTRIBUSI
+=============================== */
+.skenario-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:12px;
+  font-size:13px;
+  border-radius:12px;
+  overflow:hidden;
+  background:#020617;
+}
+
+.skenario-table th{
+  background:#020617;
+  font-weight:600;
+}
+
+.skenario-card.investor .skenario-table th{
+  color:#fed7aa;
+}
+
+.skenario-card.komunitas .skenario-table th{
+  color:#bbf7d0;
+}
+
+.skenario-table th,
+.skenario-table td{
+  border:1px solid #334155;
+  padding:8px 10px;
+  vertical-align:top;
+}
+
+.skenario-table tr:nth-child(even){
+  background:rgba(15,23,42,.6);
+}
+
+.skenario-table td{
+  color:#e5e7eb;
+}
+
+/* ===============================
+   RESPONSIVE
+=============================== */
+@media(max-width:900px){
+  .skenario-grid{
+    grid-template-columns:1fr;
+  }
+
+  .skenario-card{
+    padding:26px 22px;
+  }
+
+  .skenario-card p{
+    max-width:100%;
+  }
+}
+
+/* =================================================
+   STUDI MINI MADURA – ADVANCED VISUAL STYLE
+================================================= */
+
+#studi{
+  position:relative;
+  background:
+    linear-gradient(
+      rgba(2,6,23,.82),
+      rgba(2,6,23,.9)
+    ),
+    url('bg-map.jpeg') center/cover;
+  overflow:hidden;
+}
+
+/* subtle texture overlay */
+#studi::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(34,197,94,.08), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(56,189,248,.06), transparent 45%);
+  pointer-events:none;
+}
+
+/* ===============================
+   GRID FOTO
+=============================== */
+.studi-grid{
+  position:relative;
+  display:grid;
+  grid-template-columns:repeat(2, 1fr);
+  gap:30px;
+  margin-top:36px;
+  z-index:1;
+}
+
+/* ===============================
+   ITEM FOTO
+=============================== */
+.studi-item{
+  position:relative;
+  height:280px;
+  border-radius:22px;
+  overflow:hidden;
+  background:#020617;
+  border:1px solid rgba(148,163,184,.18);
+  box-shadow:
+    0 25px 45px rgba(0,0,0,.55),
+    inset 0 0 0 1px rgba(255,255,255,.02);
+  transition:
+    transform .5s ease,
+    box-shadow .5s ease;
+}
+
+/* depth hover */
+.studi-item:hover{
+  transform:translateY(-6px);
+  box-shadow:
+    0 40px 70px rgba(0,0,0,.65),
+    inset 0 0 0 1px rgba(255,255,255,.03);
+}
+
+/* ===============================
+   GAMBAR
+=============================== */
+.studi-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:
+    saturate(.95)
+    contrast(1.05)
+    brightness(.9);
+  transform:scale(1.02);
+  transition:
+    transform .8s ease,
+    filter .6s ease;
+}
+
+.studi-item:hover img{
+  transform:scale(1.12);
+  filter:
+    saturate(1.05)
+    contrast(1.1)
+    brightness(1);
+}
+
+/* ===============================
+   OVERLAY
+=============================== */
+.studi-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:flex-end;
+  padding:22px 24px;
+  background:
+    linear-gradient(
+      to top,
+      rgba(2,6,23,.92),
+      rgba(2,6,23,.65) 40%,
+      rgba(2,6,23,.15)
+    );
+}
+
+/* garis aksen bawah */
+.studi-overlay::before{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height:4px;
+  background:linear-gradient(
+    90deg,
+    #22c55e,
+    #38bdf8
+  );
+  opacity:.85;
+}
+
+/* ===============================
+   TEKS OVERLAY
+=============================== */
+.studi-overlay h4{
+  position:relative;
+  font-size:15px;
+  font-weight:600;
+  color:#e5e7eb;
+  letter-spacing:.6px;
+  line-height:1.4;
+  text-shadow:0 4px 12px rgba(0,0,0,.7);
+}
+
+/* ===============================
+   RESPONSIVE
+=============================== */
+@media(max-width:900px){
+  .studi-grid{
+    grid-template-columns:1fr;
+    gap:26px;
+  }
+
+  .studi-item{
+    height:230px;
+  }
+}
+
+/* =================================================
+   ADAPTASI JOGJA – FINAL POLISHED STYLE
+================================================= */
+
+#adaptasi{
+  background:
+    linear-gradient(rgba(2,6,23,.75),rgba(2,6,23,.75)),
+    url('bg-jogja.jpg') center/cover fixed;
+}
+
+/* GRID */
+.adaptasi-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+  align-items:stretch;
+  margin-top:40px;
+}
+
+/* CARD */
+.adaptasi-card{
+  background:linear-gradient(
+    to bottom,
+    rgba(15,23,42,.96),
+    rgba(2,6,23,.96)
+  );
+  border:1px solid #1e293b;
+  border-radius:22px;
+  padding:34px 32px;
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.45),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  display:flex;
+  flex-direction:column;
+}
+
+/* STRIP AKSEN */
+.adaptasi-card::before{
+  content:"";
+  height:6px;
+  width:100%;
+  border-radius:22px 22px 0 0;
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+.adaptasi-card.problem::before{
+  background:linear-gradient(90deg,#fb923c,#ef4444);
+}
+
+.adaptasi-card.solution::before{
+  background:linear-gradient(90deg,#22c55e,#16a34a);
+}
+
+/* JUDUL */
+.adaptasi-card h3{
+  font-size:20px;
+  margin-bottom:18px;
+  letter-spacing:.5px;
+}
+
+.adaptasi-card.problem h3{
+  color:#fb923c;
+}
+
+.adaptasi-card.solution h3{
+  color:#22c55e;
+}
+
+/* IMAGE */
+.adaptasi-image{
+  border-radius:16px;
+  overflow:hidden;
+  margin-bottom:18px;
+}
+
+.adaptasi-image img{
+  width:100%;
+  height:200px;
+  object-fit:cover;
+  transition:transform .6s ease;
+}
+
+.adaptasi-card:hover .adaptasi-image img{
+  transform:scale(1.05);
+}
+
+/* PARAGRAF */
+.adaptasi-card p{
+  font-size:14px;
+  line-height:1.75;
+  margin-bottom:14px;
+  color:#e5e7eb;
+  text-align:justify;
+}
+
+/* SUB JUDUL */
+.adaptasi-card h4{
+  margin-top:22px;
+  margin-bottom:10px;
+  font-size:15px;
+  font-weight:600;
+  padding-left:12px;
+  border-left:3px solid;
+}
+
+.adaptasi-card.problem h4{
+  border-color:#fb923c;
+  color:#fed7aa;
+}
+
+.adaptasi-card.solution h4{
+  border-color:#22c55e;
+  color:#bbf7d0;
+}
+
+/* LIST */
+.adaptasi-card ul{
+  padding-left:18px;
+  margin-bottom:10px;
+}
+
+.adaptasi-card li{
+  font-size:14px;
+  line-height:1.6;
+  margin-bottom:6px;
+}
+
+/* STEPS */
+.adaptasi-steps{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:8px;
+}
+
+.adaptasi-steps .step{
+  background:rgba(2,6,23,.7);
+  border:1px solid #334155;
+  border-radius:14px;
+  padding:14px 16px;
+}
+
+.adaptasi-steps strong{
+  display:block;
+  margin-bottom:6px;
+  color:#a7f3d0;
+  font-size:14px;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .adaptasi-grid{
+    grid-template-columns:1fr;
+  }
+
+  .adaptasi-image img{
+    height:180px;
+  }
+}
+
+/* =================================================
+   INDIKATOR KEBERHASILAN – FINAL STYLE
+================================================= */
+
+#indikator{
+  background:
+    linear-gradient(rgba(2,6,23,.8),rgba(2,6,23,.8));
+}
+
+/* GRID */
+.indikator-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:32px;
+  margin-top:40px;
+}
+
+/* CARD */
+.indikator-card{
+  position:relative;
+  background:linear-gradient(
+    to bottom,
+    rgba(15,23,42,.96),
+    rgba(2,6,23,.96)
+  );
+  border:1px solid #1e293b;
+  border-radius:22px;
+  padding:34px 30px;
+  box-shadow:
+    0 12px 35px rgba(0,0,0,.4),
+    inset 0 1px 0 rgba(255,255,255,.04);
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+
+.indikator-card:hover{
+  transform:translateY(-6px);
+  box-shadow:
+    0 20px 45px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.05);
+}
+
+/* LABEL A B C */
+.indikator-label{
+  position:absolute;
+  top:-16px;
+  left:24px;
+  background:linear-gradient(90deg,#22c55e,#16a34a);
+  color:#022c22;
+  font-weight:700;
+  font-size:16px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+
+/* JUDUL */
+.indikator-card h3{
+  margin-top:12px;
+  margin-bottom:14px;
+  font-size:18px;
+  color:#22c55e;
+  letter-spacing:.5px;
+}
+
+/* PARAGRAF */
+.indikator-card p{
+  font-size:14px;
+  line-height:1.75;
+  color:#e5e7eb;
+  text-align:justify;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .indikator-grid{
+    grid-template-columns:1fr;
+    gap:28px;
+  }
+
+  .indikator-card{
+    padding:30px 24px;
+  }
+}
+
+/* =================================================
+   HERO TEAM (FOTO PENGEMBANG)
+================================================= */
+
+.hero-content{
+  max-width:900px;
+}
+
+.hero-team{
+  display:flex;
+  justify-content:center;
+  gap:16px;
+  margin-bottom:28px;
+}
+
+.hero-team img{
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid #22c55e;
+  box-shadow:
+    0 8px 22px rgba(0,0,0,.5),
+    inset 0 1px 0 rgba(255,255,255,.25);
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+
+.hero-team img:hover{
+  transform:translateY(-6px) scale(1.05);
+  box-shadow:
+    0 14px 34px rgba(0,0,0,.65),
+    0 0 0 5px rgba(34,197,94,.25);
+}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  .hero-team img{
+    width:54px;
+    height:54px;
+  }
+}
+
+/* =================================================
+   HERO INSTANSI (STRONG ONLY)
+================================================= */
+
+.hero-institution{
+  width:100%;
+  text-align:center;
+  margin:20px 0 28px;
+}
+
+.hero-institution strong{
+  display:block;
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.8px;
+  color:#e5e7eb;
+  opacity:.9;
+}
+
+/* ===============================
+   NAV TOGGLE (MOBILE)
+=============================== */
+.nav-toggle{
+  display:none;
+  font-size:26px;
+  color:#22c55e;
+  cursor:pointer;
+
+  position:relative;
+  z-index:10000; /* ⬅️ INI KUNCI UTAMA */
+}
+
+/* MOBILE */
+@media(max-width:900px){
+  .nav-toggle{
+    display:block;
+  }
+
+  .nav-menu{
+    display:flex;              /* ✅ INI KUNCI */
+    position:absolute;
+    top:70px;
+    left:0;
+    width:100%;
+    background:rgba(2,6,23,.97);
+    flex-direction:column;
+    gap:0;
+    border-bottom:1px solid #1e293b;
+
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .35s ease;
+  }
+
+  .nav-menu li{
+    border-top:1px solid #1e293b;
+  }
+
+  .nav-menu a{
+    display:block;
+    padding:16px 8%;
+    font-size:15px;
+  }
+
+  .nav-menu.active{
+    max-height:400px;
+  }
+}
+
+/* =================================================
+   FOOTER – FINAL CLEAN STYLE
+================================================= */
+
+.footer{
+  background:rgba(2,6,23,.95);
+  border-top:1px solid #1e293b;
+  padding:50px 8% 30px;
+  margin-top:80px;
+}
+
+.footer-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr;
+  gap:40px;
+  margin-bottom:30px;
+}
+
+/* BRAND */
+.footer-brand h3{
+  color:#22c55e;
+  letter-spacing:2px;
+  margin-bottom:12px;
+}
+
+.footer-brand p{
+  font-size:14px;
+  line-height:1.7;
+  color:#cbd5f5;
+  opacity:.9;
+}
+
+/* MENU */
+.footer h4{
+  font-size:15px;
+  margin-bottom:14px;
+  color:#f8fafc;
+  letter-spacing:.6px;
+}
+
+.footer ul{
+  list-style:none;
+}
+
+.footer li{
+  margin-bottom:10px;
+}
+
+.footer a{
+  text-decoration:none;
+  font-size:14px;
+  color:#cbd5f5;
+  transition:.3s;
+}
+
+.footer a:hover{
+  color:#22c55e;
+}
+
+/* BOTTOM */
+.footer-bottom{
+  border-top:1px solid #1e293b;
+  padding-top:18px;
+  text-align:center;
+  font-size:13px;
+  color:#94a3b8;
+}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .footer-grid{
+    grid-template-columns:1fr;
+    gap:30px;
+  }
+
+  .footer{
+    padding:40px 6% 24px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-brand">COTS</div>
+
+  <!-- TOGGLE BUTTON -->
+  <div class="nav-toggle" id="navToggle">
+    ☰
+  </div>
+
+  <ul class="nav-menu" id="navMenu">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#peta-masalah">Peta Masalah</a></li>
+    <li><a href="#skenario">Skenario</a></li>
+    <li><a href="#studi">Studi Madura</a></li>
+    <li><a href="#adaptasi">Adaptasi Jogja</a></li>
+    <li><a href="#indikator">Indikator</a></li>
+  </ul>
+</nav>
+
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-content">
+
+    <!-- FOTO PENGEMBANG -->
+    <div class="hero-team">
+      <img src="dev1.jpg" alt="Pengembang 1">
+      <img src="dev2.jpg" alt="Pengembang 2">
+      <img src="dev3.jpg" alt="Pengembang 3">
+    </div>
+
+    <div class="hero-institution">
+  <strong>Universitas Trunodjoyo Madura</strong>
+</div>
+
+    <h1>Community-Owned Tourism Simulator</h1>
+    <p>
+      Web yang menunjukkan “kalau warga jadi tuan rumah, hasilnya seperti apa”
+    </p>
+
+  </div>
+</section>
+
+<!-- PETA MASALAH -->
+<section class="map-section" id="peta-masalah">
+  <div class="section-title">
+    <h2>Peta Masalah</h2>
+    <p>
+      Alur sebab–akibat pariwisata di Yogyakarta dan
+      praktik alternatif berbasis masyarakat di Madura.
+    </p>
+  </div>
+
+  <div class="flowchart">
+
+    <!-- YOGYAKARTA -->
+    <div class="flow-column">
+      <h3>YOGYAKARTA</h3>
+
+      <div class="flow-box">Masyarakat lokal tersisih dari pariwisata</div>
+      <div class="arrow-down">↓</div>
+
+      <div class="flow-box">Alih fungsi lahan dan gentrifikasi</div>
+      <div class="arrow-down">↓</div>
+
+      <div class="flow-box">
+        Ekonomi tidak merata karena masyarakat
+        lokal menjadi pekerja informal
+      </div>
+      <div class="arrow-down">↓</div>
+
+      <div class="flow-box">
+        Budaya direduksi menjadi produk pasar
+      </div>
+      <div class="arrow-down">↓</div>
+
+      <div class="flow-box">
+        Partisipasi warga bersifat formalitas
+      </div>
+    </div>
+
+    <!-- MADURA -->
+    <div class="flow-column">
+      <h3>MADURA</h3>
+
+      <div class="flow-box">
+        Masyarakat menjadi pengelola utama
+      </div>
+      <div class="arrow-down">↓</div>
+
+      <div class="flow-box">
+        Keputusan diambil melalui musyawarah
+      </div>
+      <div class="arrow-down">↓</div>
+
+      <div class="flow-box">
+        Nilai religius sebagai pedoman bersama
+      </div>
+      <div class="arrow-down">↓</div>
+
+      <div class="flow-box">
+        Budaya lestari melalui edu-tourism
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LANJUTAN -->
+<section id="skenario">
+  <div class="section-title">
+    <h2>Skenario Awal</h2>
+    <p>Perbandingan pengelolaan pariwisata berbasis investor dan berbasis masyarakat.</p>
+  </div>
+
+  <div class="skenario-grid">
+
+    <!-- ================= INVESTOR DOMINAN ================= -->
+    <div class="skenario-card investor">
+      <h3>1. Investor Dominan</h3>
+
+      <p>
+        Investor dominan adalah pola pengelolaan pariwisata di mana kendali utama
+        berada di tangan pemilik modal, baik perusahaan besar, pengusaha luar daerah,
+        maupun pihak eksternal. Investor menentukan arah pembangunan, jenis atraksi,
+        hingga pembagian keuntungan.
+      </p>
+
+      <p>
+        Dalam model ini, masyarakat lokal umumnya hanya berperan sebagai tenaga kerja
+        atau pelengkap, sementara keputusan strategis dan keuntungan terbesar lebih
+        banyak dinikmati oleh investor.
+      </p>
+
+      <h4>a) Distribusi Pendapatan</h4>
+      <table class="skenario-table">
+        <tr>
+          <th>Penerima Manfaat</th>
+          <th>Bentuk Pendapatan</th>
+          <th>Porsi</th>
+          <th>Keterangan</th>
+        </tr>
+        <tr>
+          <td>Investor / Pengembang</td>
+          <td>Penjualan vila, kavling, sewa aset, capital gain</td>
+          <td>Tinggi (±60–70%)</td>
+          <td>Keuntungan terpusat pada pemilik modal</td>
+        </tr>
+        <tr>
+          <td>Pemerintah Daerah</td>
+          <td>Pajak hotel, restoran, retribusi</td>
+          <td>Sedang (±20–25%)</td>
+          <td>Masuk PAD, tidak langsung ke warga</td>
+        </tr>
+        <tr>
+          <td>Masyarakat Lokal</td>
+          <td>Upah kerja, jasa informal</td>
+          <td>Rendah (±5–15%)</td>
+          <td>Tanpa kepemilikan aset</td>
+        </tr>
+      </table>
+
+      <p>
+        Pada kasus Jogja Eco Wisata, distribusi pendapatan menunjukkan pola investor dominan. Skema utama yang dijalankan adalah penjualan unit vila/kavling sebagai produk investasi, di mana keuntungan terbesar berada pada pengembang dan pemilik modal.
+      </p>
+
+      <p>Masyarakat lokal tidak memiliki kepemilikan aset wisata, serta tidak terlibat dalam rantai nilai utama pariwisata. Peran warga sekitar terbatas pada pekerjaan pendukung dengan upah tetap, sehingga manfaat ekonomi tidak terdistribusi secara adil ke komunitas lokal. Ketika proyek mengalami stagnasi, masyarakat juga tidak memiliki posisi tawar untuk mengamankan manfaat ekonomi jangka panjang.</p>
+
+      <h4>b) Konflik Sosial</h4>
+      <p>Kasus Jogja Eco Wisata memunculkan konflik sosial dan ketegangan struktural, terutama antara investor, pengembang, dan pemerintah daerah. Konflik ini dipicu oleh:</p>
+      <ul>
+        <li>Ketidakjelasan legalitas lahan (termasuk tanah kas desa)</li>
+        <li>Pembangunan tidak sesuai janji</li>
+        <li>Minim transparansi dan partisipasi publik</li>
+      </ul>
+      <p>Masyarakat lokal berada pada posisi pasif dan rentan, karena tidak dilibatkan sejak tahap perencanaan. Situasi ini memperlihatkan bagaimana pariwisata berbasis investor tidak hanya berisiko secara ekonomi, tetapi juga mengganggu stabilitas sosial dan kepercayaan publik di wilayah destinasi.</p>
+
+      <h4>c) Keberlanjutan Budaya</h4>
+      <p>
+        Dalam Jogja Eco Wisata, budaya dan identitas lokal tidak menjadi fondasi utama pengembangan destinasi, melainkan sekadar elemen pendukung narasi “eco” dan “wisata alam”. Tidak terdapat mekanisme yang menempatkan masyarakat sebagai penjaga nilai budaya atau penentu representasi budaya lokal.
+Akibatnya, keberlanjutan budaya bersifat lemah dan tidak terjamin, karena orientasi utama proyek adalah properti dan investasi, bukan pelestarian nilai sosial-budaya. Model ini berpotensi menjauhkan pariwisata dari konteks budaya lokal Yogyakarta dan memperkuat praktik komodifikasi ruang tanpa akar komunitas.
+      </p>
+    </div>
+
+    <!-- ================= MASYARAKAT DOMINAN ================= -->
+    <!-- ⬇️ DIUBAH: masyarakat → komunitas -->
+    <div class="skenario-card komunitas">
+      <h3>2. Masyarakat Dominan</h3>
+
+      <p>
+        Masyarakat dominan adalah pola pengelolaan pariwisata di mana warga lokal menjadi aktor utama dalam perencanaan, pengelolaan, dan pengambilan keputusan. Pariwisata dikembangkan berdasarkan nilai, kebutuhan, dan kesepakatan komunitas, sering melalui musyawarah, kelembagaan desa, atau kelompok sadar wisata. Dalam model ini, masyarakat tidak hanya terlibat, tetapi memiliki rasa kepemilikan dan kontrol, sehingga manfaat ekonomi, sosial, dan budaya lebih banyak kembali ke komunitas lokal.
+      </p>
+
+      <h4>a) Distribusi Pendapatan</h4>
+      <table class="skenario-table">
+        <tr>
+          <th>Penerima Manfaat</th>
+          <th>Bentuk Pendapatan</th>
+          <th>Porsi</th>
+          <th>Keterangan</th>
+        </tr>
+        <tr>
+          <td>Masyarakat Lokal</td>
+          <td>Tiket, jasa wisata, UMKM, homestay</td>
+          <td>Tinggi (±55–65%)</td>
+          <td>Dikelola melalui BUMDes</td>
+        </tr>
+        <tr>
+          <td>Pemerintah Desa</td>
+          <td>Retribusi, kontribusi BUMDes</td>
+          <td>Sedang (±20–25%)</td>
+          <td>Kembali ke pembangunan desa</td>
+        </tr>
+        <tr>
+          <td>Pihak Eksternal</td>
+          <td>Pendampingan, promosi</td>
+          <td>Rendah (±10–15%)</td>
+          <td>Tidak menguasai aset</td>
+        </tr>
+      </table>
+
+      <p>Pada pariwisata berbasis masyarakat seperti Somber Rajeh, distribusi pendapatan cenderung lebih adil karena masyarakat lokal berperan langsung sebagai pengelola utama. Pendapatan dari tiket masuk, jasa wisata, dan usaha pendukung dikelola melalui BUMDes dan kelompok warga, sehingga manfaat ekonomi tidak terpusat pada satu pihak saja. Warga tidak hanya menerima upah kerja, tetapi juga memperoleh penghasilan dari kepemilikan dan pengelolaan usaha wisata. Pola ini membuat pendapatan pariwisata berputar di desa dan memperkuat ekonomi lokal secara berkelanjutan.</p>
+
+      <h4>b) Konflik Sosial</h4>
+      <p>Dari penelitian tentang pengembangan Somber Rajeh:</p>
+      <ul>
+        <li>Partisipasi masyarakat yang tinggi memperkecil peluang konflik sosial karena warga dilibatkan sejak awal dalam perencanaan dan pengambilan keputusan.</li>
+        <li>Kolaborasi antara masyarakat, BUMDes, dan pemerintah desa menciptakan konsensus bersama sehingga tidak ada dominasi pihak luar yang memicu ketimpangan atau resistensi lokal.</li>
+        <li>Karena semua pihak merasa terlibat dan bersinergi dalam pemanfaatan aset desa, potensi pergesekan seperti yang sering terjadi pada pariwisata investor dominan dapat diminimalisir.</li>
+      </ul>
+
+      <h4>c) Keberlanjutan Budaya</h4>
+      <p>
+        Keberlanjutan budaya dalam pengelolaan wisata Somber Rajeh relatif terjaga karena masyarakat menjadi aktor utama dalam pengambilan keputusan. Nilai gotong royong, kearifan lokal, dan identitas budaya Madura tidak diposisikan sebagai komoditas semata, melainkan sebagai bagian dari kehidupan sosial yang menyatu dengan aktivitas wisata. Karena masyarakat terlibat langsung, pengembangan destinasi cenderung selaras dengan norma dan tradisi setempat, sehingga pariwisata tidak menghilangkan identitas lokal, tetapi justru memperkuat rasa memiliki dan tanggung jawab warga terhadap budaya mereka sendiri.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<section id="studi">
+  <div class="section-title">
+    <h2>Studi Mini Madura</h2>
+    <p>Pariwisata Madura yang berhasil dikelola masyarakat.</p>
+  </div>
+
+  <div class="studi-grid">
+
+    <!-- FOTO 1 -->
+    <div class="studi-item">
+      <img src="madura-1.jpg" alt="Studi Madura 1">
+      <div class="studi-overlay">
+        <h4>Pengelolaan Wisata oleh Warga</h4>
+      </div>
+    </div>
+
+    <!-- FOTO 2 -->
+    <div class="studi-item">
+      <img src="madura-2.jpg" alt="Studi Madura 2">
+      <div class="studi-overlay">
+        <h4>Musyawarah & Kelembagaan Desa</h4>
+      </div>
+    </div>
+
+    <!-- FOTO 3 -->
+    <div class="studi-item">
+      <img src="madura-3.jpg" alt="Studi Madura 3">
+      <div class="studi-overlay">
+        <h4>UMKM & Aktivitas Wisata</h4>
+      </div>
+    </div>
+
+    <!-- FOTO 4 -->
+    <div class="studi-item">
+      <img src="madura-4.jpg" alt="Studi Madura 4">
+      <div class="studi-overlay">
+        <h4>Pelestarian Budaya Lokal</h4>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section id="adaptasi">
+  <div class="section-title">
+    <h2>Adaptasi Kampung Wisata Jogja</h2>
+    <p>
+      Simulasi penerapan model pariwisata berbasis masyarakat
+      pada destinasi ikonik Yogyakarta.
+    </p>
+  </div>
+
+  <div class="adaptasi-grid">
+
+    <!-- ================= PROBLEM SIDE ================= -->
+    <div class="adaptasi-card problem">
+      <h3>What’s Wrong with Prambanan Temple?</h3>
+
+      <div class="adaptasi-image">
+        <!-- nanti kamu ganti src dengan foto Candi Prambanan -->
+        <img src="prambanan.jpg" alt="Candi Prambanan">
+      </div>
+
+      <p>
+        Candi Prambanan merupakan salah satu destinasi pariwisata paling terkenal dan menjadi ikon budaya Yogyakarta yang menarik jutaan wisatawan setiap tahunnya, baik domestik maupun mancanegara. Kawasan wisata ini dikelola secara profesional oleh PT Taman Wisata Candi Borobudur, Prambanan, dan Ratu Boko (BUMN), yang mengatur operasional, fasilitas wisata, serta sistem komersialisasi destinasi. Dalam model pengelolaan ini, peran masyarakat lokal di sekitar kawasan relatif terbatas dan tidak terlibat dalam pengambilan keputusan strategis, sehingga Candi Prambanan merepresentasikan pola pariwisata dengan investor dominan, di mana kendali utama berada pada institusi besar, bukan komunitas lokal.</p>
+
+<p>Akibatnya, manfaat ekonomi pariwisata tidak terdistribusi secara merata kepada masyarakat sekitar, karena warga lebih banyak berperan sebagai pekerja informal atau pelengkap dalam rantai pariwisata. Masyarakat tidak memiliki akses kepemilikan, kontrol, maupun ruang untuk menentukan arah pengembangan destinasi, sehingga legitimasi sosial pariwisata menjadi lemah. Kondisi ini berpotensi menciptakan jarak antara destinasi wisata dan komunitas lokal, serta menempatkan budaya dan ruang hidup masyarakat sebagai objek komodifikasi tanpa keterlibatan bermakna dari pemilik budaya itu sendiri.
+      </p>
+    </div>
+
+    <!-- ================= ADAPTATION SIDE ================= -->
+    <div class="adaptasi-card solution">
+      <h3>
+        What if we look at it from Madura's side? 
+      </h3>
+
+      <p>
+        Jika Candi Prambanan Dikembangkan dengan Model Masyarakat Dominan (Belajar dari Madura)
+      </p>
+
+      <h4>A. Dampak Utama</h4>
+      <ul>
+        <li>Masyarakat lokal tidak lagi berada di pinggir sistem</li>
+        <li>Masyarakat menjadi pemilik, pengelola, dan penentu arah wisata</li>
+      </ul>
+
+      <h4>B. Tahapan Logis & Realistis</h4>
+
+      <div class="adaptasi-steps">
+        <div class="step">
+          <strong>Tahap 1 – Penguatan Kelembagaan Lokal Seperti di Madura</strong>
+          <ul>
+            <li>Pembentukan lembaga komunitas (BUMDes/Koperasi Wisata)</li>
+            <li>Perwakilan warga dilibatkan dalam musyawarah pengelolaan kawasan</li>
+            <li>Masyarakat diberi hak kelola terbatas namun nyata (zona usaha, layanan wisata, atraksi budaya).</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <strong>Tahap 2 – Redistribusi Peran Ekonomi Meniru pola Madura</strong>
+          <ul>
+            <li>Warga lokal mengelola homestay, pemandu, kuliner, atraksi budaya, UMKM,</li>
+            <li>Keuntungan wisata tidak langsung ke perusahaan besar, tetapi: dibagi ke komunitas, diputar ulang untuk desa, dan dikelola secara transparan.</li>
+          </ul>
+        </div>
+
+        <div class="step">
+          <strong>Tahap 3 – Budaya Jadi Fondasi, Bukan Ornamen Seperti di pariwisata berbasis masyarakat Madura</strong>
+          <ul>
+          <li>Budaya lokal tidak dikemas berlebihan demi turis</li>
+<li>Narasi budaya ditentukan oleh warga sendiri,</li>
+<li>Wisata berkembang selaras dengan nilai lokal, bukan meminggirkannya.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="indikator">
+  <div class="section-title">
+    <h2>Indikator Keberhasilan</h2>
+    <p>Kepemilikan, legitimasi, dan keberlanjutan.</p>
+  </div>
+
+  <div class="indikator-grid">
+
+    <!-- ================= KEPEMILIKAN ================= -->
+    <div class="indikator-card">
+      <div class="indikator-label">A</div>
+      <h3>Kepemilikan</h3>
+      <p>
+        Apakah masyarakat lokal benar-benar punya peran dan kuasa?
+        Bukan cuma jadi penonton atau pekerja, tapi ikut menentukan arah,
+        mengelola, dan menikmati hasil pariwisata di wilayahnya sendiri.
+      </p>
+    </div>
+
+    <!-- ================= LEGITIMASI ================= -->
+    <div class="indikator-card">
+      <div class="indikator-label">B</div>
+      <h3>Legitimasi</h3>
+      <p>
+        Pariwisata dianggap “sah” oleh warga. Artinya, masyarakat menerima,
+        mendukung, dan merasa pariwisata itu bagian dari hidup mereka,
+        bukan sesuatu yang dipaksakan dari luar.
+      </p>
+    </div>
+
+    <!-- ================= KEBERLANJUTAN ================= -->
+    <div class="indikator-card">
+      <div class="indikator-label">C</div>
+      <h3>Keberlanjutan</h3>
+      <p>
+        Pariwisata bisa jalan terus tanpa merusak budaya, lingkungan,
+        dan kehidupan sosial. Bukan ramai sesaat lalu menyisakan
+        masalah di kemudian hari.
+      </p>
+    </div>
+
+  </div>
+</section>
+<script>
+  const navToggle = document.getElementById("navToggle");
+  const navMenu = document.getElementById("navMenu");
+
+  navToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+  });
+
+  // auto close saat klik menu
+  document.querySelectorAll(".nav-menu a").forEach(link => {
+    link.addEventListener("click", () => {
+      navMenu.classList.remove("active");
+    });
+  });
+</script>
+
+<footer class="footer">
+  <div class="footer-grid">
+
+    <!-- BRAND -->
+    <div class="footer-brand">
+      <h3>COTS</h3>
+      <p>
+        Community-Owned Tourism Simulator adalah media simulasi
+        untuk memahami dampak pengelolaan pariwisata berbasis
+        investor dan berbasis masyarakat, dengan studi kasus
+        Yogyakarta dan Madura.
+      </p>
+    </div>
+
+    <!-- MENU -->
+    <div>
+      <h4>Navigasi</h4>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#peta-masalah">Peta Masalah</a></li>
+        <li><a href="#skenario">Skenario</a></li>
+        <li><a href="#studi">Studi Madura</a></li>
+        <li><a href="#adaptasi">Adaptasi Jogja</a></li>
+        <li><a href="#indikator">Indikator</a></li>
+      </ul>
+    </div>
+
+    <!-- INSTITUSI -->
+    <div>
+      <h4>Institusi</h4>
+      <ul>
+        <li>Universitas Trunojoyo Madura</li>
+        <li>Program Studi Pendidikan Informatika</li>
+        <li>Tahun 2026</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 TIM DEADLINERS FORUM INDONESIA MUDA — All Rights Reserved
+  </div>
+</footer>
+
+</body>
+</html>
